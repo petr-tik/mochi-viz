@@ -1,5 +1,6 @@
 import logging
 from unittest import registerResult
+from cluster import make_links
 
 from flask import Flask, request
 import requests
@@ -10,16 +11,10 @@ logger = logging.getLogger('mochi')
 
 app = Flask(__name__)
 
-def make_links(cards):
-    return [
-        {'source': card['id'], 'target': reference}
-        for card in cards
-        for reference in card.get('references', [])
-        if reference in [card['id'] for card in cards]
-    ]
 
 def get_card_page(api_key, bookmark=None):
     return requests.get("https://app.mochi.cards/api/cards", params={"bookmark":bookmark}, auth=(api_key, None)).json()
+
 
 @app.route("/api/cards", methods=['POST'])
 def get_cards():
