@@ -1,2 +1,4 @@
 flask
 requests
+ollama
+scikit-learn
