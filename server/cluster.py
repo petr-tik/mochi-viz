@@ -13,6 +13,7 @@ documents = [
 ]
 
 OLLAMA_PORT = 11434
+OLLALA_EMBEDDINGS_MODEL = "all-minilm"
 DOCKER_LOCALHOST = "http://host.docker.internal"
 
 # Initialize Ollama client
@@ -22,7 +23,7 @@ client = Client(
 
 # Function to generate embeddings for a document
 def generate_embeddings(doc):
-    response = client.embed("all-minilm", doc)
+    response = client.embed(OLLALA_EMBEDDINGS_MODEL, doc)
     return response['embeddings'][0]
 
 # Generate embeddings for all documents
