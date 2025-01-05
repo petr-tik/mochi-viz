@@ -8,14 +8,16 @@ from ollama import Client
 documents = [
     "Document 1 content here.",
     "Document 2 content here.",
-    # Add your 1000 documents here
     "What kind of integer overflow is undefined behaviour in C++\n---\nsigned integer overflow",
     "What is another hash collision strategy apart from open addressing?\n---\nseparate chaining"
 ]
 
+OLLAMA_PORT = 11434
+DOCKER_LOCALHOST = "http://host.docker.internal"
+
 # Initialize Ollama client
 client = Client(
-  host="http://host.docker.internal:11434",
+  host=f"{DOCKER_LOCALHOST}:{OLLAMA_PORT}",
 )
 
 # Function to generate embeddings for a document
