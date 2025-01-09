@@ -10,7 +10,7 @@ COPY . .
 RUN npm install
 
 # #Expose the required port
-EXPOSE 3000
+EXPOSE 3669
 
 # #Run the command
 CMD ["npm", "start"]

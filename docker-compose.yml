@@ -5,9 +5,9 @@ services:
     volumes: 
       - ./frontend/:/usr/src/app/
     environment:
-      PORT: 3000
+      PORT: 3669
     ports:
-      - 3000:3000
+      - 3669:3669
     command: ["sh", "-c", "npm install && npm start"]
   flask:
     build: ./server/
