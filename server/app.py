@@ -5,6 +5,17 @@ from cluster import make_links
 from flask import Flask, request
 import requests
 
+from opentelemetry import metrics
+
+# Acquire a meter.
+meter = metrics.get_meter("diceroller.meter")
+
+# Now create a counter instrument to make measurements with
+roll_counter = meter.create_counter(
+    "dice.rolls",
+    description="The number of rolls by roll value",
+)
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('mochi')
@@ -34,4 +45,5 @@ def get_cards():
 
 
 if __name__ == "__main__":
+    roll_counter.add(1, {"roll.value": "3"})
     app.run(host='0.0.0.0', port=5000, debug=True)
