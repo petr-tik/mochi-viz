@@ -2,3 +2,5 @@ flask
 requests
 ollama
 scikit-learn
+opentelemetry-distro
+opentelemetry-instrumentation
