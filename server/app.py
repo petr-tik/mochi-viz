@@ -33,10 +33,13 @@ def get_cards():
         cards = []
         api_key = request.form.get('api_key')  
         response = get_card_page(api_key=api_key)
+        # TODO publish a span for how long it took to retrieve cards and how many were retrieved
         cards += response['docs']
         while len(response['docs']) > 0 and len(cards) < 500:
             response = get_card_page(api_key, response['bookmark'])
             cards += response['docs']
+
+        # TODO publish a span for how long it took to make all the links
         links = make_links(cards)
         result = {'error': False, 'cards': cards, 'links': links}
     except KeyError:
