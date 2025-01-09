@@ -17,6 +17,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
+def healthcheck():
+    return client.list()
+
+
 def generate_embeddings(card):
     try:
         response = client.embed(OLLALA_EMBEDDINGS_MODEL, card)

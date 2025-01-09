@@ -1,5 +1,9 @@
 version: "3.9"
 services:
+  flask:
+    build: ./server/
+    volumes:
+      - ./server/:/usr/src/app/
   frontend:
     build: ./frontend/
     volumes: 
@@ -9,10 +13,6 @@ services:
     ports:
       - 3669:3669
     command: ["sh", "-c", "npm install && npm start"]
-  flask:
-    build: ./server/
-    volumes: 
-      - ./server/:/usr/src/app/
   zipkin:
     image: ghcr.io/openzipkin/zipkin-slim:${TAG:-latest}
     container_name: zipkin
@@ -21,3 +21,6 @@ services:
       - STORAGE_TYPE=mem
     ports:
       - 9411:9411
+    depends_on:
+          flask:
+            condition: service_started
