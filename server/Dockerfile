@@ -13,5 +13,7 @@ COPY . .
 
 #Run the command
 ENV OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+ENV OTEL_METRICS_EXPORTER=none
+ENV OTEL_LOGS_EXPORTER=none
 
-CMD ["opentelemetry-instrument", "--metrics_exporter", "console", "--traces_exporter", "console", "--logs_exporter", "console", "python3.9", "./app.py"]
+CMD ["opentelemetry-instrument", "--traces_exporter", "zipkin_json", "python3.9", "./app.py"]

@@ -5,16 +5,23 @@ from cluster import make_links
 from flask import Flask, request
 import requests
 
-from opentelemetry import metrics
+from opentelemetry import trace
+from opentelemetry.exporter.zipkin.proto.http import ZipkinExporter
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.sdk.resources import SERVICE_NAME, Resource
 
-# Acquire a meter.
-meter = metrics.get_meter("diceroller.meter")
+resource = Resource(attributes={
+    SERVICE_NAME: "MOCHI_POWERED_BY_LLMs"
+})
 
-# Now create a counter instrument to make measurements with
-roll_counter = meter.create_counter(
-    "dice.rolls",
-    description="The number of rolls by roll value",
-)
+zipkin_exporter = ZipkinExporter(endpoint="http://localhost:9411/api/v2/spans")
+
+provider = TracerProvider(resource=resource)
+processor = BatchSpanProcessor(zipkin_exporter)
+provider.add_span_processor(processor)
+trace.set_tracer_provider(provider)
+tracer = trace.get_tracer("TRACER_TEST")
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -48,5 +55,6 @@ def get_cards():
 
 
 if __name__ == "__main__":
-    roll_counter.add(1, {"roll.value": "3"})
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    with tracer.start_as_current_span("service_life") as parent:
+        parent.set_attribute("LOOK_AT_ME", 696969)
+        app.run(host='0.0.0.0', port=5000, debug=True)
