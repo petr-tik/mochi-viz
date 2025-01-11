@@ -3,10 +3,11 @@
 import logging
 from sklearn.metrics.pairwise import cosine_similarity
 from ollama import Client
+import os
 
 OLLAMA_PORT = 11434
 OLLALA_EMBEDDINGS_MODEL = "all-minilm"
-DOCKER_LOCALHOST = "http://host.docker.internal"
+DOCKER_LOCALHOST = os.getenv("DOCKER_LOCALHOST", "http://localhost")
 
 # Initialize Ollama client
 client = Client(
