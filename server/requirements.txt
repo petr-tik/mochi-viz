@@ -2,3 +2,6 @@ flask
 requests
 ollama
 scikit-learn
+opentelemetry-distro
+opentelemetry-instrumentation
+opentelemetry-exporter-zipkin-proto-http
