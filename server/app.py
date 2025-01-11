@@ -67,8 +67,8 @@ if __name__ == "__main__":
     with tracer.start_as_current_span("service_start") as parent:
         parent.set_attribute("LOOK_AT_ME", 696969)
         parent.add_event("Starting the server")
+    healthcheck()
     try:
-        healthcheck()
         app.run(host='0.0.0.0', port=5000, debug=True)
     except Exception as e:
         print(f"Healthcheck failed: {str(e)}")
