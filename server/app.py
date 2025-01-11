@@ -55,6 +55,6 @@ def get_cards():
 
 
 if __name__ == "__main__":
-    with tracer.start_as_current_span("service_life") as parent:
+    with tracer.start_as_current_span("service_start") as parent:
         parent.set_attribute("LOOK_AT_ME", 696969)
-        app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
