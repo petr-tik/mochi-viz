@@ -13,7 +13,6 @@ services:
     build: ./server/
     volumes: 
       - ./server/:/usr/src/app/
-    command: ["python", "app.py"]
   zipkin:
       image: ghcr.io/openzipkin/zipkin-slim:${TAG:-latest}
       container_name: zipkin
