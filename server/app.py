@@ -35,17 +35,24 @@ def get_card_page(api_key, bookmark=None):
     return requests.get("https://app.mochi.cards/api/cards", params={"bookmark":bookmark}, auth=(api_key, None)).json()
 
 
-@app.route("/api/cards", methods=['POST'])
-def get_cards():
-    try:
-        cards = []
-        api_key = request.form.get('api_key')  
+def get_all_cards(api_key):
+    cards = []
+    with tracer.start_as_current_span("card_getter") as getter_span:
         response = get_card_page(api_key=api_key)
-        # TODO publish a span for how long it took to retrieve cards and how many were retrieved
+        # TODO publish a span for how long it took to retrieve cards
         cards += response['docs']
         while len(response['docs']) > 0 and len(cards) < 500:
             response = get_card_page(api_key, response['bookmark'])
             cards += response['docs']
+        getter_span.set_attribute("cards_retrieved", len(cards))
+    return cards
+
+
+@app.route("/api/cards", methods=['POST'])
+def get_cards():
+    try:
+        api_key = request.form.get('api_key')
+        cards = get_all_cards(api_key)
 
         # TODO publish a span for how long it took to make all the links
         links = make_links(cards)
@@ -58,4 +65,5 @@ def get_cards():
 if __name__ == "__main__":
     with tracer.start_as_current_span("service_start") as parent:
         parent.set_attribute("LOOK_AT_ME", 696969)
+        parent.add_event("Starting the server")
     app.run(host='0.0.0.0', port=5000, debug=True)
