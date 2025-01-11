@@ -15,7 +15,8 @@ resource = Resource(attributes={
     SERVICE_NAME: "MOCHI_POWERED_BY_LLMs"
 })
 
-zipkin_exporter = ZipkinExporter(endpoint="http://localhost:9411/api/v2/spans")
+zipkin_exporter = ZipkinExporter(endpoint="http://zipkin:9411/api/v2/spans")
+
 
 provider = TracerProvider(resource=resource)
 processor = BatchSpanProcessor(zipkin_exporter)
