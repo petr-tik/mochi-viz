@@ -14,10 +14,10 @@ services:
     volumes: 
       - ./server/:/usr/src/app/
   zipkin:
-      image: ghcr.io/openzipkin/zipkin-slim:${TAG:-latest}
-      container_name: zipkin
-      # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
-      environment:
-        - STORAGE_TYPE=mem
-      ports:
-        - 9411:9411
+    image: ghcr.io/openzipkin/zipkin-slim:${TAG:-latest}
+    container_name: zipkin
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
+    environment:
+      - STORAGE_TYPE=mem
+    ports:
+      - 9411:9411
